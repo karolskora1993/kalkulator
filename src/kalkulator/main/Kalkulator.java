@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kalkulator;
+package kalkulator.main;
+
+import kalkulator.models.DefaultOptions;
+import kalkulator.models.User;
+import kalkulator.views.Frame;
 
 /**
  *
@@ -12,13 +16,16 @@ package kalkulator;
 public class Kalkulator {
 
     /**
-     * @param args the command line arguments
+     * @param args argumenty wiersza poleceń
      */
   public static void main(String args[]) {
-        /* Create and display the form */
+            
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MyJFrame().setVisible(true);
+                
+                DefaultOptions defaultOptions=new DefaultOptions("defaultOptions.xml");
+                User user=new User();
+                new Frame(defaultOptions, user).setVisible(true);
             }
         });
     }
