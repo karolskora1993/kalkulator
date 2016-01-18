@@ -8,8 +8,13 @@ package kalkulator.views;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
+import kalkulator.models.DataBase;
+import kalkulator.models.ONP;
 
 /**
  *
@@ -114,6 +119,20 @@ public class CreateTaskJPanel extends JPanel {
         
         jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                
+                ONP onp = new ONP();
+        String tmp=jTextField1.getText();
+        tmp = onp.generateONPNot(tmp);
+        System.out.println(tmp);
+        System.out.println(onp.calc(tmp));
+        DataBase db;
+      try {
+          db = new DataBase();
+           DataBase.addModel(tmp, 0);
+           DataBase.selectAll();
+      } catch (SQLException ex) {
+          ex.printStackTrace();
+      }
             }
         });
 
