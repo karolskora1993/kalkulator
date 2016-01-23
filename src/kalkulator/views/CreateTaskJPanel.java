@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import kalkulator.models.DataBase;
+import kalkulator.models.ScaleImage;
 
 /**
  * Klasa reprezentująca panel wprowadzania zadania
@@ -21,6 +22,7 @@ public class CreateTaskJPanel extends JPanel {
     private JPasswordField password;
     private JButton okButton;
     private JButton guestSessionButton;
+    private JTextArea taskTextArea;
     private final Frame parent;
     private String task = "";
     public java.util.List<JButton> numberButt = new ArrayList<>();
@@ -43,7 +45,7 @@ public class CreateTaskJPanel extends JPanel {
         setLayout(new BorderLayout());
 
         bgComponent = new BackgroundComponent("loginBG.jpg");
-        bgComponent.setLayout(new BorderLayout());
+        bgComponent.setLayout(new BorderLayout(10, 10));
 
         JLabel chooseExistingLabel = new JLabel("Wybierz spośród istniejących zadań:");
         chooseExistingLabel.setForeground(Color.WHITE);
@@ -57,44 +59,71 @@ public class CreateTaskJPanel extends JPanel {
         existingTasksContainer.add(existingTasks);
         bgComponent.add(existingTasksContainer, BorderLayout.NORTH);
 
-        JTextArea taskTextArea = new JTextArea("Wprowadź zadanie");
+        taskTextArea = new JTextArea("Wprowadź zadanie");
         bgComponent.add(taskTextArea, BorderLayout.CENTER);
 
         JPanel buttonContainer = new JPanel(new GridLayout(2, 1));
         buttonContainer.setOpaque(false);
 
-        JPanel numberButtonsContainer = new JPanel(new GridLayout(2, 5));
-        numberButtonsContainer.setOpaque(false);
-
-        for (int i = 0; i < key.length(); i++) {
-            numberButt.add(new JButton(key.substring(i, i + 1)));
-            numberButtonsContainer.add(numberButt.get(i));
-
-            numberButt.get(i).addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    Object o = e.getSource();
-                    JButton bt = null;
-                    String buttonText = "";
-                    
-                    if(o instanceof JButton)
-                        bt = (JButton)o;
-                    
-                    if(bt!=null){
-                        buttonText = bt.getText();
-                        task+=buttonText;
-                        
-                    }
-                }
-            });
-        }
-        buttonContainer.add(numberButtonsContainer);
-//        JPanel numberButtonsContainer=new JPanel(new GridLayout(1, 5));
+//        JPanel numberButtonsContainer = new JPanel(new GridLayout(2, 5));
 //        numberButtonsContainer.setOpaque(false);
-//        for(int i=1;i<6;i++){
-//            numberButtonsContainer.add((new JLabel(new ImageIcon("images/Button"+i+".png"))));
+//        for (int i = 0; i < key.length(); i++) {
+//            numberButt.add(new JButton(key.substring(i, i + 1)));
+//            numberButtonsContainer.add(numberButt.get(i));
+//
+//            numberButt.get(i).addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mouseClicked(MouseEvent e) {
+//                    Object o = e.getSource();
+//                    JButton bt = null;
+//                    String buttonText = "";
+//                    
+//                    if(o instanceof JButton)
+//                        bt = (JButton)o;
+//                    
+//                    if(bt!=null){
+//                        buttonText = bt.getText();
+//                        task+=buttonText;
+//                        
+//                    }
+//                }
+//            });
 //        }
 //        buttonContainer.add(numberButtonsContainer);
+        GridLayout gridLayout = new GridLayout(2, 5);
+        gridLayout.setVgap(10);
+        JPanel numberButtonsContainer = new JPanel(gridLayout);
+        numberButtonsContainer.setOpaque(false);
+        for (int i = 0; i < 10; i++) {
+            Image image = new ImageIcon("images/Button" + i + ".png").getImage();
+            MyJLabel numberJLabel = new MyJLabel(ScaleImage.getScaledImageIcon(image, 80, 80));
+            numberJLabel.setValue(i);
+
+            numberJLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    MyJLabel executor = (MyJLabel) e.getSource();
+
+                    if (!task.isEmpty()) {
+                        String last=task.substring(task.length()-1, task.length());
+                        char lastChar = task.charAt(task.length() - 1);
+                        if (Character.isDigit(lastChar)) {
+                            task = task.substring(0, task.length() - 1);
+                            int number = Integer.parseInt(last) + executor.getValue();
+                            task += number;
+                        } else {
+                            task += executor.getValue();
+                        }
+                    } else {
+                        task += executor.getValue();
+                    }
+                    updateTaskArea();
+                }
+            });
+
+            numberButtonsContainer.add(numberJLabel);
+        }
+        buttonContainer.add(numberButtonsContainer);
 
         JPanel operatonButtonsContainer = new JPanel(new GridLayout(1, 5));
         operatonButtonsContainer.setOpaque(false);
@@ -103,34 +132,46 @@ public class CreateTaskJPanel extends JPanel {
         buttonBez.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                task += " - ";
+                StringBuilder stringbuilder=new StringBuilder(task);
+                stringbuilder.append(" Bez ");
+                task=stringbuilder.toString();
+                updateTaskArea();
             }
         });
         operatonButtonsContainer.add(buttonBez);
 
         JLabel buttonI = new JLabel(new ImageIcon("images/buttonI.png"));
-        buttonBez.addMouseListener(new MouseAdapter() {
+        buttonI.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                task += " + ";
+                StringBuilder stringbuilder=new StringBuilder(task);
+                stringbuilder.append(" i ");
+                task=stringbuilder.toString();
+                updateTaskArea();
             }
         });
         operatonButtonsContainer.add(buttonI);
 
         JLabel buttonPo = new JLabel(new ImageIcon("images/buttonPo.png"));
-        buttonBez.addMouseListener(new MouseAdapter() {
+        buttonPo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                task += " * ";
+                StringBuilder stringbuilder=new StringBuilder(task);
+                stringbuilder.append(" po ");
+                task=stringbuilder.toString();
+                updateTaskArea();
             }
         });
         operatonButtonsContainer.add(buttonPo);
 
         JLabel buttonPrzez = new JLabel(new ImageIcon("images/buttonPrzez.png"));
-        buttonBez.addMouseListener(new MouseAdapter() {
+        buttonPrzez.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                task += " / ";
+                StringBuilder stringbuilder=new StringBuilder(task);
+                stringbuilder.append(" przez ");
+                task=stringbuilder.toString();
+                updateTaskArea();
             }
         });
         operatonButtonsContainer.add(buttonPrzez);
@@ -151,5 +192,11 @@ public class CreateTaskJPanel extends JPanel {
         bgComponent.add(buttonContainer, BorderLayout.SOUTH);
 
         add(bgComponent);
+    }
+
+    public void updateTaskArea() {
+
+        this.taskTextArea.setText(task);
+        parent.repaint();
     }
 }

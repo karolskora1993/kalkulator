@@ -33,4 +33,14 @@ public class ScaleImage
         g2.dispose();
         return new ImageIcon(resizedImage).getImage();
     }
+    
+        public static ImageIcon getScaledImageIcon(Image srcImg, int width, int height)
+    {
+        BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImage.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+        return new ImageIcon(resizedImage);
+    }
 }
