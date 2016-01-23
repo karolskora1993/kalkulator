@@ -16,6 +16,7 @@ public class Frame extends JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private JPanel loginPanel;
     private JPanel createTaskPanel=new CreateTaskJPanel(this);
+    private JPanel resultPanel=new ResultPanel(this);
     
     public Frame(DefaultOptions defaultOptions, User user) {
         initComponents(defaultOptions, user);
@@ -63,5 +64,13 @@ public class Frame extends JFrame {
     }
     public void hideLoginPanel(){
         loginPanel.setVisible(false);
+    }
+    
+    public void hideCreateTaskJPanel(){
+        createTaskPanel.setVisible(false);
+    }
+    public void showResultPanel(){
+        add(resultPanel);
+        resultPanel.setVisible(true);
     }
 }

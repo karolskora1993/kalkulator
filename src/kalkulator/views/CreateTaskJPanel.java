@@ -1,240 +1,131 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kalkulator.views;
 
-import java.awt.Container;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.GroupLayout;
-import javax.swing.JPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
 import kalkulator.models.DataBase;
-import kalkulator.models.ONP;
+
 
 /**
+ * Klasa reprezentująca panel wprowadzania zadania
  *
- * @author apple
+ * @author Karol
  */
-public class CreateTaskJPanel extends JPanel {
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextField1;
-    
-    private Container parent;
+public class CreateTaskJPanel extends JPanel
+{
+
+    private BackgroundComponent bgComponent;
+    private JTextField username;
+    private JPasswordField password;
+    private JButton okButton;
+    private JButton guestSessionButton;
+    private final Frame parent;
 
     /**
-     * Creates new form MyJFrame
+     *
+     * @param parent Okno zawierające panel
      */
-    public CreateTaskJPanel(Container parent) {
+    public CreateTaskJPanel(Frame parent)
+    {
         this.parent=parent;
-        initComponents();
+        initializeComponent();
     }
-                        
-    private void initComponents() {
-        
-        setVisible(false);
+
+    /**
+     * Funkcja inicjalizująca komponenty
+     */
+    private void initializeComponent()
+    {
         setSize(FrameSize.getWidth(), FrameSize.getHeight());
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-
+        setLayout(new BorderLayout());
         
-
-        jLabel1.setText("wybierz gotowe zadanie:");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel2.setText("wprowadz własne zadanie:");
-
-        jLabel3.setText("wprowadź dane:");
-
-        jLabel4.setText("|");
-
-        jLabel5.setText("||");
-
-        jLabel6.setText("|||");
-
-        jLabel7.setText("||||");
-
-        jLabel8.setText("|||||");
-
-        jLabel9.setText("||||||");
-
-        jLabel10.setText("|||||||");
-
-        jLabel11.setText("||||||||");
-
-        jLabel12.setText("|||||||||");
-
-        jLabel13.setText("||||||||||");
-
-        jButton1.setText("licz zadanie");
+        bgComponent=new BackgroundComponent("loginBG.jpg");
+        bgComponent.setLayout(new BorderLayout());
         
-        jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        JLabel chooseExistingLabel=new JLabel("Wybierz spośród istniejących zadań:");
+        chooseExistingLabel.setForeground(Color.WHITE);
+        
+        String[] tasks=(String[])DataBase.getExistingTasts();
+        JComboBox existingTasks=new JComboBox(tasks);
+        
+        JPanel existingTasksContainer=new JPanel(new GridLayout(1, 2));
+        existingTasksContainer.setOpaque(false);
+        existingTasksContainer.add(chooseExistingLabel);
+        existingTasksContainer.add(existingTasks);
+        bgComponent.add(existingTasksContainer, BorderLayout.NORTH);
+        
+        JTextArea taskTextArea=new JTextArea("Wprowadź zadanie");
+        bgComponent.add(taskTextArea, BorderLayout.CENTER);
+        
+        JPanel buttonContainer=new JPanel(new GridLayout(2, 1));
+        buttonContainer.setOpaque(false);
+        
+        JPanel numberButtonsContainer=new JPanel(new GridLayout(1, 5));
+        numberButtonsContainer.setOpaque(false);
+        
+        for(int i=1;i<6;i++){
+            numberButtonsContainer.add((new JLabel(new ImageIcon("images/Button"+i+".png"))));
+        }
+        buttonContainer.add(numberButtonsContainer);
+        
+        JPanel operatonButtonsContainer=new JPanel(new GridLayout(1, 5));
+        operatonButtonsContainer.setOpaque(false);
+        
+        JLabel buttonBez=new JLabel(new ImageIcon("images/buttonBez.png"));
+        buttonBez.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
                 
-                ONP onp = new ONP();
-        String tmp=jTextField1.getText();
-        tmp = onp.generateONPNot(tmp);
-        System.out.println(tmp);
-        System.out.println(onp.calc(tmp));
-        DataBase db;
-      try {
-          db = new DataBase();
-           DataBase.addModel(tmp, 0);
-           DataBase.selectAll();
-      } catch (SQLException ex) {
-          ex.printStackTrace();
-      }
             }
-        });
-
-        jMenu1.setText("opcje zadania");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("opcje konta");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("opcje administratora");
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("pomoc");
-        jMenuBar1.add(jMenu4);
-
-
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addComponent(jSeparator3)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(jSeparator2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(26, 26, 26)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel12)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel13)))
-                        .addGap(0, 13, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addGap(12, 12, 12)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
-        );
-
-    }                                                            
-                  
+});
+        operatonButtonsContainer.add(buttonBez);
+        
+        JLabel buttonI=new JLabel(new ImageIcon("images/buttonI.png"));
+        buttonBez.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+            }
+});
+        operatonButtonsContainer.add(buttonI);
+        
+        JLabel buttonPo=new JLabel(new ImageIcon("images/buttonPo.png"));
+        buttonBez.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+            }
+});
+        operatonButtonsContainer.add(buttonPo);
+        
+        JLabel buttonPrzez=new JLabel(new ImageIcon("images/buttonPrzez.png"));
+        buttonBez.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+            }
+});
+        operatonButtonsContainer.add(buttonPrzez);
+        
+        JLabel buttonMam=new JLabel(new ImageIcon("images/buttonMam.png"));
+        buttonMam.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+                parent.hideCreateTaskJPanel();
+                parent.showResultPanel();
+            }
+});
+        operatonButtonsContainer.add(buttonMam);
+        
+        buttonContainer.add(operatonButtonsContainer);
+        
+        bgComponent.add(buttonContainer, BorderLayout.SOUTH);
+        
+        
+        add(bgComponent);
+    }
 }

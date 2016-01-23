@@ -65,5 +65,4 @@ public class DefaultOptions
     public String getDefaultUsername(){
         return defaultUsername;
     }
-   
 }

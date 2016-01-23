@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import kalkulator.controller.LoginController;
 import kalkulator.models.DefaultOptions;
+import kalkulator.models.ScaleImage;
 import kalkulator.models.User;
 
 /**
@@ -18,7 +19,8 @@ public class LoginJPanel extends JPanel
 
     private final User user;
     private final DefaultOptions defaultOptions;
-
+    
+    private BackgroundComponent bgComponent;
     private JTextField username;
     private JPasswordField password;
     private JButton okButton;
@@ -27,7 +29,8 @@ public class LoginJPanel extends JPanel
 
     /**
      *
-     * @param _defaultOptions obiekt domyślnych opci
+     * @param defaultOptions obiekt domyślnych opcji
+     * @param user obiekt użytkownika
      */
     public LoginJPanel(Frame parent, DefaultOptions defaultOptions, User user)
     {
@@ -44,17 +47,26 @@ public class LoginJPanel extends JPanel
     {
         setSize(FrameSize.getWidth(), FrameSize.getHeight());
         setLayout(new BorderLayout());
+        
+        bgComponent=new BackgroundComponent("loginBG.jpg");
+        bgComponent.setLayout(new BorderLayout());
+       
         JPanel containerPanel = new JPanel();
+        containerPanel.setOpaque(false);
         containerPanel.setLayout(new GridLayout(2, 2));
-        containerPanel.add(new JLabel("Nazwa użytkownika:"));
+        JLabel name=new JLabel("Nazwa użytkownika:");
+        name.setForeground(Color.WHITE);
+        containerPanel.add(name);
         username = new JTextField(defaultOptions.getDefaultUsername());
         containerPanel.add(username);
-        containerPanel.add(new JLabel("wprowadż hasło:"));
+        
+        JLabel passwdLabel=new JLabel("wprowadż hasło:");
+        passwdLabel.setForeground(Color.WHITE);
+        containerPanel.add(passwdLabel);
         password = new JPasswordField("");
         containerPanel.add(password);
         
-
-        add(containerPanel, BorderLayout.NORTH);
+        bgComponent.add(containerPanel, BorderLayout.NORTH);
 
         okButton = new JButton("zatwierdź");
         okButton.addActionListener(new ActionListener()
@@ -86,9 +98,14 @@ public class LoginJPanel extends JPanel
         });
 
         JPanel buttonContainerPanel = new JPanel();
+        buttonContainerPanel.setOpaque(false);
         buttonContainerPanel.add(okButton);
         buttonContainerPanel.add(guestSessionButton);
-        add(buttonContainerPanel, BorderLayout.SOUTH);
+        bgComponent.add(buttonContainerPanel, BorderLayout.SOUTH);
+        add(bgComponent);
+        
+       
     }
 
 }
+

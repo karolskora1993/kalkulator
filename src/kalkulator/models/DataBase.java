@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class DataBase {
@@ -152,6 +153,11 @@ public class DataBase {
         return 0;
 
     }
+    
+    public static Object[] getExistingTasts(){
+         String[] tasks={"brak wprowadzonych zadań"};
+        return  tasks;
+    } 
     
         
 }
