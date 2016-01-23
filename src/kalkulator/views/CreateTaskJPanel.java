@@ -60,6 +60,7 @@ public class CreateTaskJPanel extends JPanel {
         bgComponent.add(existingTasksContainer, BorderLayout.NORTH);
 
         taskTextArea = new JTextArea("Wprowadź zadanie");
+        taskTextArea.setFont(new java.awt.Font("Segoe UI Black", 1, 50));
         bgComponent.add(taskTextArea, BorderLayout.CENTER);
 
         JPanel buttonContainer = new JPanel(new GridLayout(2, 1));
