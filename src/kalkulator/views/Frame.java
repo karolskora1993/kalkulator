@@ -1,6 +1,8 @@
 package kalkulator.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import kalkulator.models.DefaultOptions;
@@ -37,7 +39,7 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Kalkulator dla osób nieznających matematyki");
         setLocationByPlatform(true);
-        setResizable(false);
+        setResizable(true);
 
         loginPanel = new LoginJPanel(this, defaultOptions, user);
 
@@ -60,6 +62,13 @@ public class Frame extends JFrame {
         jMenuBar.add(jMenu4);
 
         setJMenuBar(jMenuBar);
+        
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e){
+               Frame.this.repaint();
+            }
+        });
 
     }
 

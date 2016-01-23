@@ -6,23 +6,33 @@ import java.awt.Toolkit;
 public class FrameSize
 {
 
-    public static final int WIDTH;
-    public static final int HEIGHT;
+    public static int WIDTH;
+    public static int HEIGHT;
 
     static {
         Toolkit myToolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = myToolkit.getScreenSize();
-        WIDTH = (int) (screenSize.width * 0.5);
-        HEIGHT = (int) (screenSize.height * 0.5);
+        WIDTH = (int) (screenSize.width * 0.7);
+        HEIGHT = (int) (screenSize.height * 0.7);
     }
 
     public static int getWidth()
     {
+        updateSize();
         return WIDTH;
     }
 
     public static int getHeight()
     {
+        updateSize();
         return HEIGHT;
+    }
+    
+    public static void updateSize(){
+        Toolkit myToolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = myToolkit.getScreenSize();
+        WIDTH = (int) (screenSize.width * 0.7);
+        HEIGHT = (int) (screenSize.height * 0.7);
+        
     }
 }

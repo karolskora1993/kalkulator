@@ -96,7 +96,7 @@ public class CreateTaskJPanel extends JPanel {
         numberButtonsContainer.setOpaque(false);
         for (int i = 0; i < 10; i++) {
             Image image = new ImageIcon("images/Button" + i + ".png").getImage();
-            MyJLabel numberJLabel = new MyJLabel(ScaleImage.getScaledImageIcon(image, 80, 80));
+            MyJLabel numberJLabel = new MyJLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/13, FrameSize.getHeight()/8));
             numberJLabel.setValue(i);
 
             numberJLabel.addMouseListener(new MouseAdapter() {
@@ -127,8 +127,9 @@ public class CreateTaskJPanel extends JPanel {
 
         JPanel operatonButtonsContainer = new JPanel(new GridLayout(1, 5));
         operatonButtonsContainer.setOpaque(false);
-
-        JLabel buttonBez = new JLabel(new ImageIcon("images/buttonBez.png"));
+        
+        Image image = new ImageIcon("images/ButtonBez.png").getImage();
+        JLabel buttonBez = new JLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/13, FrameSize.getHeight()/8));
         buttonBez.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -140,7 +141,8 @@ public class CreateTaskJPanel extends JPanel {
         });
         operatonButtonsContainer.add(buttonBez);
 
-        JLabel buttonI = new JLabel(new ImageIcon("images/buttonI.png"));
+        image = new ImageIcon("images/ButtonI.png").getImage();
+        JLabel buttonI = new JLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/13, FrameSize.getHeight()/8));
         buttonI.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -152,7 +154,8 @@ public class CreateTaskJPanel extends JPanel {
         });
         operatonButtonsContainer.add(buttonI);
 
-        JLabel buttonPo = new JLabel(new ImageIcon("images/buttonPo.png"));
+        image = new ImageIcon("images/ButtonPo.png").getImage();
+        JLabel buttonPo = new JLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/13, FrameSize.getHeight()/8));
         buttonPo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -164,7 +167,8 @@ public class CreateTaskJPanel extends JPanel {
         });
         operatonButtonsContainer.add(buttonPo);
 
-        JLabel buttonPrzez = new JLabel(new ImageIcon("images/buttonPrzez.png"));
+        image = new ImageIcon("images/ButtonPrzez.png").getImage();
+        JLabel buttonPrzez = new JLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/10, FrameSize.getHeight()/6));
         buttonPrzez.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -176,7 +180,8 @@ public class CreateTaskJPanel extends JPanel {
         });
         operatonButtonsContainer.add(buttonPrzez);
 
-        JLabel buttonMam = new JLabel(new ImageIcon("images/buttonMam.png"));
+        image = new ImageIcon("images/ButtonMam.png").getImage();
+        JLabel buttonMam = new JLabel(ScaleImage.getScaledImageIcon(image, FrameSize.getWidth()/13, FrameSize.getHeight()/8));
         buttonMam.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
