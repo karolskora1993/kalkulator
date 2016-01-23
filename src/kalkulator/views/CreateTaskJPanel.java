@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import kalkulator.models.DataBase;
+import kalkulator.models.ONP;
 import kalkulator.models.ScaleImage;
 
 /**
@@ -27,7 +28,6 @@ public class CreateTaskJPanel extends JPanel {
     private String task = "";
     public java.util.List<JButton> numberButt = new ArrayList<>();
     String key = "0123456789";
-
     /**
      *
      * @param parent Okno zawierające panel
@@ -133,7 +133,7 @@ public class CreateTaskJPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 StringBuilder stringbuilder=new StringBuilder(task);
-                stringbuilder.append(" Bez ");
+                stringbuilder.append(" bez ");
                 task=stringbuilder.toString();
                 updateTaskArea();
             }
@@ -181,6 +181,9 @@ public class CreateTaskJPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println(task);
+                double solution = new ONP().getSolution(task);
+                System.out.println(solution);
+                parent.setSolution(solution);
                 parent.hideCreateTaskJPanel();
                 parent.showResultPanel();
             }

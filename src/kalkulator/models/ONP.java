@@ -7,59 +7,111 @@ package kalkulator.models;
 
 import java.util.ArrayList;
 
-
 public class ONP {
 
+    public static String wordToOperation(String str){
+        
+        String statement = str;
+        String result = "";
+        String tmp = "";
+        
+        for (int i = 0; i < statement.length(); i++) {
+            tmp = "";
+            while (statement.charAt(i) != ' ') {
+                tmp += statement.charAt(i);
+                i++;
+                if (i >= statement.length()) {
+                    break;
+                }
+            }
+            
+            if(tmp.equals("i")){
+                result+=" +";
+            }else if(tmp.equals("po")){
+                result+=" *";
+            }else if(tmp.equals("bez")){
+                result+=" -";
+            }else if(tmp.equals("przez")){
+                result+=" /";
+            }else {
+                result+=" "+tmp;    
+            }
+                      
+            
+        }
+        return result;
+    }
+    
     public static String generateONPNot(String str) {
         boolean op1 = false;
         boolean op2 = false;
+        boolean val = true;
         ArrayList<String> list = new ArrayList<String>();
         String statement = str;
-        statement = statement.replaceAll(" ", "");
+        //statement = statement.replaceAll(" ", "");
         String result = "";
+        String tmp = "";
 
         for (int i = 0; i < statement.length(); i++) {
-            if (statement.charAt(i) == '(') {
-                int j = i;
-                int block = 1;
-                while (block > 0) {
-                    j++;
-                    if (statement.charAt(j) == '(') {
-                        block++;
-                    } else if (statement.charAt(j) == ')') {
-                        block--;
-                    }
+            tmp = "";
+            while (statement.charAt(i) != ' ') {
+                tmp += statement.charAt(i);
+                i++;
+                if (i >= statement.length()) {
+                    break;
                 }
-                result += generateONPNot(statement.substring(i + 1, j));
-                i = j;
-            } else if ((statement.charAt(i) == '+'
-                    || statement.charAt(i) == '-')) {
-                if (!op1) {
-                    op1 = true;
-                    list.add(statement.substring(i, i + 1));
-                } else {
-                    result += list.get(list.size() - 1) + " ";
-                    list.remove(list.size() - 1);
-                    list.add(statement.substring(i, i + 1));
-                }
+            }
+            //System.out.println(tmp);
 
-            } else if (statement.charAt(i) == '*'
-                    || statement.charAt(i) == '/'
-                    || statement.charAt(i) == '^') {
-                list.add(statement.substring(i, i + 1));
-                op2 = true;
+            if (tmp.length() > 1) {
+                result += tmp + " ";
             } else {
-                if (op2) {
-                    result += statement.charAt(i) + " " + list.get(list.size() - 1) + " ";
-                    list.remove(list.size() - 1);
-                    op2 = false;
+                if (tmp.equals("(")) {
+                    int j = i;
+                    int block = 1;
+                    while (block > 0) {
+                        j++;
+                        if (statement.charAt(j) == '(') {
+                            block++;
+                        } else if (statement.charAt(j) == ')') {
+                            block--;
+                        }
+                    }
+                    result += generateONPNot(statement.substring(i + 1, j));
+                    i = j;
+                    
+                } else if ((tmp.equals("+")
+                        || tmp.equals("-"))) {
+                    if (!op1) {
+                        op1 = true;
+                        list.add(tmp);
+                    } else {
+                        result += " " + list.get(list.size() - 1) + " ";
+                        list.remove(list.size() - 1);
+                        list.add(tmp);
+                    }
+                   
+                } else if (tmp.equals("*")
+                        || tmp.equals("/")
+                        || tmp.equals("^")) {
+                    list.add(tmp);
+                    op2 = true;
+                   
                 } else {
-                    result += statement.charAt(i) + " ";
+                    if (op2) {
+                        result += " " + tmp + " " + list.get(list.size() - 1) + " ";
+                        list.remove(list.size() - 1);
+                        op2 = false;
+                    } else {
+                        
+                            result += " " + tmp + " ";
+                       
+                    }
                 }
             }
         }
         while (list.size() > 0) {
-            result += list.get(list.size() - 1) + " ";
+            result += " "+list.get(list.size() - 1) + " ";
             list.remove(list.size() - 1);
         }
 
@@ -71,92 +123,95 @@ public class ONP {
         double b = 0.0;
         double w = 0.0;
         String c;
-        String tmp="";
+        String tmp = "";
         ArrayList<String> list = new ArrayList<String>();
         ArrayList<String> listTmp = new ArrayList<String>();
-        boolean br=false;
-        
-        for (int i = str.length()-1 ; i >0; i--) {
-                        
-            while( str.charAt(i)==' ' ){
-                
-                tmp = str.substring(i-1, i)+tmp;
-                if(i>0){
+        boolean br = false;
+
+        for (int i = str.length() - 1; i >= 0; i--) {
+            
+            while (str.charAt(i) != ' ') {
+                tmp = str.charAt(i)+tmp;
+                if (i > 0) {
                     i--;
-                }else{
+                } else {
+                    
                     break;
                 }
             }
-            if( tmp.length() > 0 ){
+            
+            
+            if (tmp.length() > 0) {
+                System.out.println(tmp);
                 list.add(tmp);
-                tmp="";
+                tmp = "";
             }
-            
+
         }
-        
+
         do {
-            
+
             if (!list.isEmpty()) {
                 c = list.get(list.size() - 1);
                 list.remove(list.size() - 1);
-               
-                if(c.equals("+")) {
+
+                if (c.equals("+")) {
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    b = Double.parseDouble(c.replaceAll(" ","."));
+                    b = Double.parseDouble(c.replaceAll(" ", "."));
 
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    a = Double.parseDouble(c.replaceAll(" ","."));
-                    
+                    a = Double.parseDouble(c.replaceAll(" ", "."));
+
                     w = a + b;
-                    
-                    listTmp.add( Double.toString(w) ); 
+
+                    listTmp.add(Double.toString(w));
                 } else if (c.equals("-")) {
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    b = Double.parseDouble(c.replaceAll(" ","."));
+                    b = Double.parseDouble(c.replaceAll(" ", "."));
 
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    a = Double.parseDouble(c.replaceAll(" ","."));
-                    
+                    a = Double.parseDouble(c.replaceAll(" ", "."));
+
                     w = a - b;
-                    
-                    listTmp.add( Double.toString(w) ); 
+
+                    listTmp.add(Double.toString(w));
                 } else if (c.equals("*")) {
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    b = Double.parseDouble(c.replaceAll(" ","."));
+                    b = Double.parseDouble(c.replaceAll(" ", "."));
 
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    a = Double.parseDouble(c.replaceAll(" ","."));
-                    
+                    a = Double.parseDouble(c.replaceAll(" ", "."));
+
                     w = a * b;
-                    
-                    listTmp.add( Double.toString(w) ); 
+
+                    listTmp.add(Double.toString(w));
                 } else if (c.equals("/")) {
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    b = Double.parseDouble(c.replaceAll(" ","."));
+                    b = Double.parseDouble(c.replaceAll(" ", "."));
 
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    a = Double.parseDouble(c.replaceAll(" ","."));
-                    
+                    a = Double.parseDouble(c.replaceAll(" ", "."));
+
                     w = a / b;
-                    
-                    listTmp.add( Double.toString(w) ); 
+
+                    listTmp.add(Double.toString(w));
                 } else if (c.equals("^")) {
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    b = Double.parseDouble(c.replaceAll(" ","."));
+                    b = Double.parseDouble(c.replaceAll(" ", "."));
 
                     c = listTmp.get(listTmp.size() - 1);
                     listTmp.remove(listTmp.size() - 1);
-                    a = Double.parseDouble(c.replaceAll(" ","."));
-                   
+                    a = Double.parseDouble(c.replaceAll(" ", "."));
+
                     if (b == 0) {
                         w = 1;
                     } else {
@@ -167,13 +222,20 @@ public class ONP {
                             i++;
                         }
                     }
-                    listTmp.add( Double.toString(w) ); 
-                }else{   
-                    listTmp.add(c);  
-                }                               
+                    listTmp.add(Double.toString(w));
+                } else {
+                    listTmp.add(c);
+                }
             }
         } while (list.size() > 0);
 
         return w;
     }
+    
+    public static double getSolution(String str){
+        String tmp;
+        tmp = wordToOperation(str);
+        tmp = generateONPNot(tmp);
+        return calc(tmp);
+    }    
 }

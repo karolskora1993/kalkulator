@@ -6,6 +6,7 @@
 package kalkulator.main;
 
 import kalkulator.models.DefaultOptions;
+import kalkulator.models.ONP;
 import kalkulator.models.User;
 import kalkulator.views.Frame;
 
