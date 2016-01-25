@@ -10,6 +10,7 @@ import javax.swing.*;
 import kalkulator.models.DataBase;
 import kalkulator.models.ONP;
 import kalkulator.models.ScaleImage;
+import kalkulator.models.Task;
 
 /**
  * Klasa reprezentująca panel wprowadzania zadania

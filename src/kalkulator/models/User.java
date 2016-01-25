@@ -6,14 +6,34 @@
 package kalkulator.models;
 
 /**
- *
+ *  Klasa przechowywująca dane użytkownika
+ * 
  * @author apple
  */
 public class User {
     private boolean loggedIn=false;
+    private String login="guest";
+    private String hash;
     
+    /**
+     * Funkcja sprawdzająca czy user jest zalogowany
+     */
     public boolean isLoggedIn(){
         return loggedIn;
+    }
+    
+    /**
+     * Funkcja zwracająca login usera
+     */
+    public String getLogin(){
+        return login;
+    }
+    
+    /**
+     * Funkcja zwracająca hash
+     */
+    public String getHash(){
+        return hash;
     }
     
 }
