@@ -52,18 +52,8 @@ public class CreateTaskJPanel extends JPanel {
 
         JLabel chooseExistingLabel = new JLabel("Wybierz spośród istniejących zadań:");
         chooseExistingLabel.setForeground(Color.WHITE);
-       
-//        Task[] tasks= db.selectTasks();
-//        String[] tasks2=null;
-//        int t=0;
-//        for (Task c: tasks)
-//        {
-//            tasks2[t]=tasks[t].getTask();
-//            t++;
-//        }
-//        
-//        JComboBox existingTasks = new JComboBox(tasks2);
-        String tasks[]={"brak zadan w bazie"};
+         
+        String tasks[]={"Brak zadań w bazie."};
         JComboBox existingTasks = new JComboBox(tasks);
         
         JPanel existingTasksContainer = new JPanel(new GridLayout(1, 2));

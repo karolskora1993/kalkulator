@@ -44,7 +44,9 @@ public class DataBase {
         createTables();
     }
 
-   
+    /**
+    * Funkcja tworzaca nowe tabele w bazie danych
+    */
     public boolean createTables()  {
         String createUsers = "CREATE TABLE IF NOT EXISTS users (id_user INTEGER PRIMARY KEY AUTOINCREMENT, nick varchar(255), hash varchar(255))";
         String createTasks = "CREATE TABLE IF NOT EXISTS tasks (id_task INTEGER PRIMARY KEY AUTOINCREMENT, task varchar(255), result float)";
@@ -60,6 +62,9 @@ public class DataBase {
         return true;
     }
     
+    /**
+    * Funkcja zapisujaca w bazie nowego uzytkownika
+    */
    public boolean newUser(String nick, String hash) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement(
@@ -73,7 +78,10 @@ public class DataBase {
         }
         return true;
     }
- 
+   
+    /**
+    * Funkcja zapisujaca w bazie nowe zadanie
+    */
     public boolean newTask(String task, double result) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement(
@@ -90,20 +98,18 @@ public class DataBase {
     }
  
 
- 
-    public Task[] selectTasks() {
-        Task[] tasks = null;
+    /**
+    *Funkcja pobierająca zapisane zadania z bazy
+    */
+    public String[] selectTasks() {
+        String[] tasks = null;
         try {
             ResultSet data = stat.executeQuery("SELECT * FROM tasks");
-            int id;
+            System.out.print(data);
             String task;
-            double result;
             int i=0;
             while(data.next()) {
-                id = data.getInt("id_task");
-                task = data.getString("task");
-                result = Double.valueOf(data.getString("result"));
-                tasks[i] = new Task(id, task, result);
+                tasks[i] = data.getString("task");
                 i++;
             }
         } catch (SQLException e) {
@@ -112,6 +118,9 @@ public class DataBase {
         return tasks;
     }
  
+    /**
+    * Funkcja zamykająca połączenie z bazą
+    */
     public void closeConnection() {
         try {
             conn.close();
