@@ -11,9 +11,30 @@ package kalkulator.models;
  * @author Michał
  */
 public class Task {
-    String task="";
+    int id;
+    String task;
     double result;
+ 
+/**
+* Konstruktor "pustego" zadania
+*/    
+Task()
+{
+    this.id=0;
+    this.result=0;
+    this.task="";
+}
     
+/**
+* Konstruktor zadania ze znana "trescia" i wynikiem
+*/
+Task(int id, String task, double result)
+{
+    this.id=id;
+    this.result=result;
+    this.task=task;
+}
+        
 /**
 * Funkcja pobierająca zapisane zadanie
 */

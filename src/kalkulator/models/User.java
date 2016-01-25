@@ -11,6 +11,7 @@ package kalkulator.models;
  * @author apple
  */
 public class User {
+    int id=0;
     private boolean loggedIn=false;
     private String login="guest";
     private String hash;

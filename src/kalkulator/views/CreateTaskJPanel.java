@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
-import kalkulator.models.DataBase;
+import kalkulator.models.DataBase2;
 import kalkulator.models.ONP;
 import kalkulator.models.ScaleImage;
 import kalkulator.models.Task;
@@ -51,7 +51,7 @@ public class CreateTaskJPanel extends JPanel {
         JLabel chooseExistingLabel = new JLabel("Wybierz spośród istniejących zadań:");
         chooseExistingLabel.setForeground(Color.WHITE);
 
-        String[] tasks = (String[]) DataBase.getExistingTasts();
+        String[] tasks = (String[]) DataBase2.getExistingTasts();
         JComboBox existingTasks = new JComboBox(tasks);
 
         JPanel existingTasksContainer = new JPanel(new GridLayout(1, 2));
