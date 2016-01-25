@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
+import kalkulator.models.DataBase;
 import kalkulator.models.DataBase2;
 import kalkulator.models.ONP;
 import kalkulator.models.ScaleImage;
@@ -29,6 +30,7 @@ public class CreateTaskJPanel extends JPanel {
     private String task = "";
     public java.util.List<JButton> numberButt = new ArrayList<>();
     String key = "0123456789";
+    DataBase db = new DataBase();
     /**
      *
      * @param parent Okno zawierające panel
@@ -50,10 +52,20 @@ public class CreateTaskJPanel extends JPanel {
 
         JLabel chooseExistingLabel = new JLabel("Wybierz spośród istniejących zadań:");
         chooseExistingLabel.setForeground(Color.WHITE);
-
-        String[] tasks = (String[]) DataBase2.getExistingTasts();
+       
+//        Task[] tasks= db.selectTasks();
+//        String[] tasks2=null;
+//        int t=0;
+//        for (Task c: tasks)
+//        {
+//            tasks2[t]=tasks[t].getTask();
+//            t++;
+//        }
+//        
+//        JComboBox existingTasks = new JComboBox(tasks2);
+        String tasks[]={"brak zadan w bazie"};
         JComboBox existingTasks = new JComboBox(tasks);
-
+        
         JPanel existingTasksContainer = new JPanel(new GridLayout(1, 2));
         existingTasksContainer.setOpaque(false);
         existingTasksContainer.add(chooseExistingLabel);
@@ -193,6 +205,10 @@ public class CreateTaskJPanel extends JPanel {
                 parent.setSolution(solution);
                 parent.hideCreateTaskJPanel();
                 parent.showResultPanel();
+                
+                db.newTask(task, solution);
+                          
+                db.closeConnection();
             }
         });
         operatonButtonsContainer.add(buttonMam);
@@ -202,8 +218,10 @@ public class CreateTaskJPanel extends JPanel {
         bgComponent.add(buttonContainer, BorderLayout.SOUTH);
 
         add(bgComponent);
+        
+        
     }
-
+    
     public void updateTaskArea() {
 
         this.taskTextArea.setText(task);

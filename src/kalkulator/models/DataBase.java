@@ -22,7 +22,7 @@ import java.util.List;
 public class DataBase {
  
     public static final String DRIVER = "org.sqlite.JDBC";
-    public static final String DB_URL = "jdbc:sqlite:biblioteka.db";
+    public static final String DB_URL = "jdbc:sqlite:baza.db";
  
     private Connection conn;
     private Statement stat;
@@ -32,7 +32,6 @@ public class DataBase {
             Class.forName(DataBase.DRIVER);
         } catch (ClassNotFoundException e) {
             System.err.println("Brak sterownika JDBC");
-            e.printStackTrace();
         }
  
         try {
@@ -40,7 +39,6 @@ public class DataBase {
             stat = conn.createStatement();
         } catch (SQLException e) {
             System.err.println("Problem z otwarciem polaczenia");
-            e.printStackTrace();
         }
  
         createTables();
@@ -87,23 +85,26 @@ public class DataBase {
             System.err.println("Blad zapisie nowego zadania do bazy");
             return false;
         }
+        System.out.print("Dodano zadanie i wynik do bazy");
         return true;
     }
  
 
  
-    public List<Task> selectTasks() {
-        List<Task> tasks = new LinkedList<Task>();
+    public Task[] selectTasks() {
+        Task[] tasks = null;
         try {
-            ResultSet data = stat.executeQuery("SELECT * FROM czytelnicy");
+            ResultSet data = stat.executeQuery("SELECT * FROM tasks");
             int id;
             String task;
             double result;
+            int i=0;
             while(data.next()) {
-                id = data.getInt("id_user");
+                id = data.getInt("id_task");
                 task = data.getString("task");
                 result = Double.valueOf(data.getString("result"));
-                tasks.add(new Task(id,task,result));
+                tasks[i] = new Task(id, task, result);
+                i++;
             }
         } catch (SQLException e) {
             return null;
